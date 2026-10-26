@@ -1,5 +1,25 @@
 # app-builder-lib
 
+## 26.18.2
+
+### Patch Changes
+
+<details><summary>Updated 5 dependencies</summary>
+
+<small>
+
+[`8348b16`](https://github.com/electron-userland/electron-builder/commit/8348b165b05273e8fa0d07763180d39017ddfbff) [`f3c7077`](https://github.com/electron-userland/electron-builder/commit/f3c7077c6e86c63ac27898a10fbfab319d87c1b6)
+
+</small>
+
+- `builder-util@26.18.2`
+- `builder-util-runtime@9.7.2`
+- `electron-publish@26.18.2`
+- `dmg-builder@26.18.2`
+- `electron-builder-squirrel-windows@26.18.2`
+
+</details>
+
 ## 26.18.1
 
 ### Patch Changes

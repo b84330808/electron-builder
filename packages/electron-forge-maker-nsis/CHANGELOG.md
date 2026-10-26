@@ -1,5 +1,19 @@
 # electron-forge-maker-nsis
 
+## 26.18.2
+
+### Patch Changes
+
+<details><summary>Updated 1 dependency</summary>
+
+<small>
+
+</small>
+
+- `app-builder-lib@26.18.2`
+
+</details>
+
 ## 26.18.1
 
 ### Patch Changes
