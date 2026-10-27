@@ -1,5 +1,29 @@
 # app-builder-lib
 
+## 27.0.0-alpha.14
+### Major Changes
+
+- Feat(msi): build `msi` and `msiWrapped` installers with WiX 3.14.1 (`toolsets.wix`), native arm64 MSIs (#10354) _[`#10404`](https://github.com/electron-userland/electron-builder/pull/10404) [`dacb1ec`](https://github.com/electron-userland/electron-builder/commit/dacb1ece71d6ec1725e6d82ad05b2521e0e32d83)_
+
+  BREAKING CHANGE: `toolsets.wix` unset or `"latest"` (= `"2.0.0"`) builds `msi` and `msiWrapped` installers with WiX 3.14.1, which produces a native `Arm64` MSI for `arm64` builds. `toolsets.wix: "0.0.0"` keeps the previous WiX 4.0.0.5512 preview bundle, which packages an arm64 app in an x64 MSI. The WiX 3 project uses the WiX 3 namespace, nested `Directory` elements (also for a nested `menuCategory`) and explicit ids for files in subdirectories; it keeps the upgrade code, install paths and file layout. An `msiProjectCreated` hook that inserts elements of a WiX 4 extension namespace must use the WiX 3 one (for example `http://schemas.microsoft.com/wix/UtilExtension`) or pin `"0.0.0"`; with WiX 3, a project that still declares a WiX 4 namespace after the hook fails the build with an `InvalidConfigurationError` that names it. A custom bundle (`{ url, checksum }`) must have the WiX 3 layout.
+
+### Patch Changes
+
+- Fix(nsis): skip the assisted installer's license page on the first visit in the elevated inner instance only if it was accepted in the outer instance. Keep the license visible when elevation occurs before any pages are shown, and preserve Back navigation. _[`#10377`](https://github.com/electron-userland/electron-builder/pull/10377) [`b66a4e1`](https://github.com/electron-userland/electron-builder/commit/b66a4e178b74a4e7e7d02d5df6960a380669565f)_
+
+<details><summary>Updated 2 dependencies</summary>
+
+<small>
+
+
+
+</small>
+
+- `dmg-builder@27.0.0-alpha.14`
+- `electron-builder-squirrel-windows@27.0.0-alpha.14`
+
+</details>
+
 ## 27.0.0-alpha.13
 ### Major Changes
 

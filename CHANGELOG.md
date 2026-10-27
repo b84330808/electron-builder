@@ -1,3 +1,28 @@
+# [27.0.0-alpha.14](https://github.com/electron-userland/electron-builder/compare/electron-builder@27.0.0-alpha.13...electron-builder@27.0.0-alpha.14) (2026-10-27)
+
+## electron-builder@27.0.0-alpha.14
+
+### Major Changes
+
+- Feat(msi): build `msi` and `msiWrapped` installers with WiX 3.14.1 (`toolsets.wix`), native arm64 MSIs (#10354) _[`#10404`](https://github.com/electron-userland/electron-builder/pull/10404) [`dacb1ec`](https://github.com/electron-userland/electron-builder/commit/dacb1ece71d6ec1725e6d82ad05b2521e0e32d83)_ — `app-builder-lib`
+
+  BREAKING CHANGE: `toolsets.wix` unset or `"latest"` (= `"2.0.0"`) builds `msi` and `msiWrapped` installers with WiX 3.14.1, which produces a native `Arm64` MSI for `arm64` builds. `toolsets.wix: "0.0.0"` keeps the previous WiX 4.0.0.5512 preview bundle, which packages an arm64 app in an x64 MSI. The WiX 3 project uses the WiX 3 namespace, nested `Directory` elements (also for a nested `menuCategory`) and explicit ids for files in subdirectories; it keeps the upgrade code, install paths and file layout. An `msiProjectCreated` hook that inserts elements of a WiX 4 extension namespace must use the WiX 3 one (for example `http://schemas.microsoft.com/wix/UtilExtension`) or pin `"0.0.0"`; with WiX 3, a project that still declares a WiX 4 namespace after the hook fails the build with an `InvalidConfigurationError` that names it. A custom bundle (`{ url, checksum }`) must have the WiX 3 layout.
+
+### Patch Changes
+
+- Fix(nsis): skip the assisted installer's license page on the first visit in the elevated inner instance only if it was accepted in the outer instance. Keep the license visible when elevation occurs before any pages are shown, and preserve Back navigation. _[`#10377`](https://github.com/electron-userland/electron-builder/pull/10377) [`b66a4e1`](https://github.com/electron-userland/electron-builder/commit/b66a4e178b74a4e7e7d02d5df6960a380669565f)_ — `app-builder-lib`
+
+## electron-updater@7.0.0-alpha.13
+
+### Patch Changes
+
+- Fix(updater): install deb/rpm/pacman updates without freezing the app while the elevation dialog is open. `quitAndInstall()` and `installPendingUpdateIfAvailable()` now run the package manager asynchronously and quit once it finished; the commands, environment and elevation helper are unchanged, the on-quit install stays synchronous, and other platforms are unaffected. The package manager's output goes to a file instead of a pipe, so quitting the app mid-install no longer kills it with SIGPIPE, and a failed install's error now ends with what it wrote to stderr _[`#10094`](https://github.com/electron-userland/electron-builder/pull/10094) [`3c4d9b5`](https://github.com/electron-userland/electron-builder/commit/3c4d9b5e6ecb91b811c831eadf120ff00ce9b0ac)_
+- Fix(updater): the install on quit follows `autoInstallEvent` as it is when the app quits, also when it was `"manual"` while the update downloaded, and the updater logs why nothing is installed when the app quits before the update finished downloading and verifying, without installing an update cached by an earlier launch that `verifyUpdateFile` has not accepted yet _[`#10095`](https://github.com/electron-userland/electron-builder/pull/10095) [`ea65a06`](https://github.com/electron-userland/electron-builder/commit/ea65a0695a9f8f6a134cf34487952c33525f18bd)_
+- Fix(updater): deb/rpm/pacman installs pass the package-manager command to pkexec and sudo as an argv array, without a shell, both for `quitAndInstall()` / `installPendingUpdateIfAvailable()` and for the install when the app quits (`autoInstallEvent: "onQuit"`): the authentication dialog shows the command being authorized, the installer path is passed unescaped (paths containing a single quote are supported), the command is looked up in /usr/sbin, /usr/bin, /sbin and /bin rather than the caller's PATH, and Node's DEP0190 warning does not apply. gksudo, kdesudo and beesu take a single command string and keep the `/bin/bash -c` form. A command killed by a signal during the install on quit is reported as a failure _[`#10095`](https://github.com/electron-userland/electron-builder/pull/10095) [`ea65a06`](https://github.com/electron-userland/electron-builder/commit/ea65a0695a9f8f6a134cf34487952c33525f18bd)_
+- Fix(updater): elevate Linux package installs with pkexec (polkit) whenever it is installed; gksudo and kdesudo, which are unmaintained, removed from Debian and Ubuntu and do not work under Wayland, are only used on systems without polkit, and the updater logs once when it skips one _[`#10095`](https://github.com/electron-userland/electron-builder/pull/10095) [`ea65a06`](https://github.com/electron-userland/electron-builder/commit/ea65a0695a9f8f6a134cf34487952c33525f18bd)_
+
+
+
 # [27.0.0-alpha.13](https://github.com/electron-userland/electron-builder/compare/electron-builder@27.0.0-alpha.12...electron-builder@27.0.0-alpha.13) (2026-10-26)
 
 ## electron-builder@27.0.0-alpha.13
